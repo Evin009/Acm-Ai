@@ -8,9 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "node src/server.js",
-    "server:dev": "node --watch src/server.js",
-    "test:backend": "node src/test-backend.js"
+    "server": "node backend/server.js",
+    "server:dev": "node --watch backend/server.js",
+    "test:backend": "node backend/test-backend.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
