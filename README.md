@@ -71,13 +71,18 @@ ACM AI is a full-stack chat application that allows users to interact with Googl
 
 ```
 acmai/
-├── src/
+├── frontend/
 │   ├── App.jsx          # Main React component
 │   ├── App.css          # Styles
+│   ├── main.jsx         # React entry point
+│   └── index.css        # Global styles
+├── backend/
 │   ├── server.js        # Express backend server
 │   ├── gemini.js        # Gemini API integration
-│   └── main.jsx         # React entry point
+│   └── test-backend.js  # Backend tests
 ├── public/              # Static assets
+├── index.html           # HTML entry point
+├── vite.config.js       # Vite configuration
 └── package.json         # Dependencies and scripts
 ```
 
@@ -92,7 +97,7 @@ PORT=5000
 
 ### CORS
 
-CORS is configured for `http://localhost:5173`. To change it, edit `src/server.js`.
+CORS is configured for `http://localhost:5173`. To change it, edit `backend/server.js`.
 
 ## Troubleshooting
 
@@ -106,5 +111,3 @@ CORS is configured for `http://localhost:5173`. To change it, edit `src/server.j
 - Or kill the process using the port
 
 ---
-
-**Made with ❤️ using React and Gemini AI**
