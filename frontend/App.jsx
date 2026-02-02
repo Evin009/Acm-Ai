@@ -17,14 +17,14 @@ const App = () => {
               {
                 role: "assistant",
                 content:
-                  "Welcome to ACM AI. How can I assist your research today?",
+                  "Welcome to ACM AI. Ready to challenge me for a prompt war?",
               },
             ];
       } catch (e) {
         return [
           {
             role: "assistant",
-            content: "Welcome to ACM AI. How can I assist your research today?",
+            content: "Welcome to ACM AI. Ready to challenge me for a prompt war?",
           },
         ];
       }
@@ -32,7 +32,7 @@ const App = () => {
     return [
       {
         role: "assistant",
-        content: "Welcome to ACM AI. How can I assist your research today?",
+        content: "Welcome to ACM AI. Ready to challenge me for a prompt war?",
       },
     ];
   });
@@ -95,7 +95,7 @@ const App = () => {
     setMessages([
       {
         role: "assistant",
-        content: "Welcome to ACM AI. How can I assist your research today?",
+        content: "Welcome to ACM AI. Ready to challenge me for a prompt war?",
       },
     ]);
     localStorage.removeItem("acmai-chat-history");
