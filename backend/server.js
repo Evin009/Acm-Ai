@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { getGeminiResponse } from "./gemini.js";
+import { getOpenAIResponse } from "./openai.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config({
-  path: path.resolve(__dirname, "../.env"),
+  path: path.resolve(__dirname, ".env"),
 });
 // console.log("CWD:", process.cwd());
 // console.log("KEY EXISTS:", !!process.env.GEMINI_API_KEY);
@@ -56,7 +56,7 @@ app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
     message: "ACM AI Server is running",
-    hasApiKey: !!process.env.GEMINI_API_KEY,
+    hasApiKey: !!process.env.OPENAI_API_KEY,
   });
 });
 
@@ -97,34 +97,50 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
-    const reply = await getGeminiResponse(prompt);
+    const reply = await getOpenAIResponse(prompt);
     return res.json({ reply });
   } catch (err) {
     console.error("Chat endpoint error:", err.message);
     console.error("Error stack:", err.stack);
-    
-    // Handle specific error types
-    if (err.message === "RATE_LIMIT_EXCEEDED") {
-      return res.status(429).json({ 
-        error: "Rate limit exceeded. Please wait a moment and try again. (Limit: 5 requests/minute, 20 requests/day)" 
+    const msg = err.message || "";
+
+    // Handle specific error types (exact match)
+    if (msg === "RATE_LIMIT_EXCEEDED") {
+      return res.status(429).json({
+        error: "Rate limit exceeded. Please wait a minute and try again.",
       });
     }
-    
-    if (err.message === "QUOTA_EXCEEDED") {
-      return res.status(429).json({ 
-        error: "Daily quota exceeded. You've reached the limit of 20 requests per day. Please try again tomorrow." 
+    if (msg === "QUOTA_EXCEEDED") {
+      return res.status(429).json({
+        error: "Daily quota exceeded. Please try again tomorrow or check your API plan.",
       });
     }
-    
-    if (err.message === "API_KEY_MISSING" || err.message === "API_KEY_INVALID") {
-      return res.status(500).json({ 
-        error: "API configuration error. Please check your API key settings." 
+    if (msg === "API_KEY_MISSING" || msg === "API_KEY_INVALID") {
+      return res.status(500).json({
+        error: "API configuration error. Please check your API key in the backend .env file.",
       });
     }
-    
-    // Generic error
-    return res.status(500).json({ 
-      error: "AI service failed. Please try again later." 
+
+    // Handle API errors by message content (e.g. OPENAI_API_ERROR)
+    if (msg.includes("429") || msg.includes("Too Many Requests") || msg.toLowerCase().includes("rate limit")) {
+      return res.status(429).json({
+        error: "Rate limit exceeded. Please wait a minute and try again.",
+      });
+    }
+    if (msg.toLowerCase().includes("quota") || msg.includes("RESOURCE_EXHAUSTED")) {
+      return res.status(429).json({
+        error: "Daily quota exceeded. Please try again tomorrow or check your API plan.",
+      });
+    }
+    if (msg.includes("API_KEY") || msg.includes("401") || msg.includes("Unauthorized") || msg.includes("Incorrect API key")) {
+      return res.status(500).json({
+        error: "API configuration error. Please check your API key in the backend .env file.",
+      });
+    }
+
+    // Generic error – still return 500 but with a clearer message
+    return res.status(500).json({
+      error: "AI service is temporarily unavailable. Please check your API key and quota, then try again.",
     });
   }
 });
@@ -158,14 +174,14 @@ app.listen(PORT, () => {
   console.log(`✅ ACM AI Server running on port ${PORT}`);
   console.log(`📍 Health check: http://localhost:${PORT}/api/health`);
 
-  if (!process.env.GEMINI_API_KEY) {
+  if (!process.env.OPENAI_API_KEY) {
     console.warn(
-      "⚠️  WARNING: GEMINI_API_KEY is not set in environment variables"
+      "⚠️  WARNING: OPENAI_API_KEY is not set in environment variables"
     );
     console.warn(
-      "   Please create a .env file with: GEMINI_API_KEY=your_api_key_here"
+      "   Please add OPENAI_API_KEY=your_key to backend/.env"
     );
   } else {
-    console.log("✅ Gemini API key is configured");
+    console.log("✅ OpenAI API key is configured");
   }
 });

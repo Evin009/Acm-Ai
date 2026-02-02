@@ -1,39 +1,3 @@
-// import dotenv from "dotenv";
-// import { GoogleGenerativeAI } from "@google/generative-ai";
-
-// dotenv.config();
-// console.log("KEY EXISTS:", !!process.env.GEMINI_API_KEY);
-// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-// async function getGeminiResponse() {
-//   try {
-//     const model = genAI.getGenerativeModel({
-//       model: "gemini-2.5-flash",
-//     });
-
-//     const prompt =
-//       "Write a sonnet about a programmers life, but also make it rhyme";
-
-//     const result = await model.generateContent(prompt);
-
-//     if (
-//       !result ||
-//       !result.response ||
-//       typeof result.response.text !== "function"
-//     ) {
-//       throw new Error("Invalid response from Gemini");
-//     }
-
-//     const response_text = await result.response.text();
-//     console.log(response_text);
-//   } catch (err) {
-//     console.error("Gemini Error:", err);
-//     throw new Error("Gemini API failed");
-//   }
-// }
-
-// getGeminiResponse();
-
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 import path from "path";
@@ -44,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 // Load environment variables
 dotenv.config({
-  path: path.resolve(__dirname, "../.env"),
+  path: path.resolve(__dirname, '.env'),
 });
 
 const apiKey = process.env.GEMINI_API_KEY;
@@ -63,7 +27,7 @@ export async function getGeminiResponse(prompt) {
     }
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-3-pro-preview",
+      model: "gemini-1.5-flash",
     });
 
     const result = await model.generateContent(prompt);

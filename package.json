@@ -13,12 +13,12 @@
     "test:backend": "node backend/test-backend.js"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
     "axios": "^1.13.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "lucide-react": "^0.561.0",
+    "openai": "^4.104.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-markdown": "^10.1.0",
