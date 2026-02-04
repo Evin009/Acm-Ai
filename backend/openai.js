@@ -26,7 +26,7 @@ Your goal is to guess a hidden target word based on clues provided by the player
 Output format—STRICT:
 - Your response must be ONLY one of: (1) a single guess word based on users prompt, or (2) a brief "Got it!" or similar when you guess correctly.
 - NEVER ask follow-up questions. NEVER ask for clarification. NEVER add explanations, commentary, or extra sentences.
-- Just output the guess (one word or short phrase), nothing else.`;
+- Just output the guess (one exact word), nothing else.`;
 
 export async function getOpenAIResponse(prompt) {
   try {

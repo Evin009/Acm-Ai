@@ -1,22 +1,23 @@
 # ACM AI
 
-A modern chat application powered by Google's Gemini AI. Built with React and Express.
+A Taboo-style word guessing game powered by OpenAI. Built with React and Express.
 
 ## What is this?
 
-ACM AI is a full-stack chat application that allows users to interact with Google's Gemini AI. It features a sleek dark theme, markdown rendering for AI responses, and chat history functionality.
+ACM AI is a full-stack chat application where you play a Taboo-style guessing game against an AI. Give clues (without using taboo words) and the AI will guess your target word. It features a sleek dark theme, markdown rendering, and chat history functionality.
 
 ## Tech Stack
 
 **Frontend:**
 - React 19.2
 - Vite
+- Tailwind CSS
 - React Markdown
-- Space Mono (Font)
+- Lucide React (icons)
 
 **Backend:**
 - Express 5.2
-- Google Generative AI SDK
+- OpenAI SDK
 - Node.js
 
 ## How to Run
@@ -24,7 +25,7 @@ ACM AI is a full-stack chat application that allows users to interact with Googl
 ### Prerequisites
 
 - Node.js (v18 or higher)
-- Google Gemini API key ([Get one here](https://makersuite.google.com/app/apikey))
+- OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
 
 ### Installation
 
@@ -35,9 +36,9 @@ ACM AI is a full-stack chat application that allows users to interact with Googl
 
 2. **Create `.env` file**
    
-   Create a `.env` file in the root directory:
+   Create a `.env` file in the `backend/` directory:
    ```env
-   GEMINI_API_KEY=your_api_key_here
+   OPENAI_API_KEY=your_api_key_here
    PORT=5000
    ```
 
@@ -78,7 +79,8 @@ acmai/
 │   └── index.css        # Global styles
 ├── backend/
 │   ├── server.js        # Express backend server
-│   ├── gemini.js        # Gemini API integration
+│   ├── openai.js        # OpenAI API integration
+│   ├── .env             # Environment variables (create this)
 │   └── test-backend.js  # Backend tests
 ├── public/              # Static assets
 ├── index.html           # HTML entry point
@@ -90,7 +92,7 @@ acmai/
 
 ### Backend Port
 
-Default port is `5000`. Change it in `.env`:
+Default port is `5000`. Change it in `backend/.env`:
 ```env
 PORT=5000
 ```
@@ -102,12 +104,12 @@ CORS is configured for `http://localhost:5173`. To change it, edit `backend/serv
 ## Troubleshooting
 
 ### "AI service failed" Error
-- Check your `.env` file has `GEMINI_API_KEY`
+- Check your `backend/.env` file has `OPENAI_API_KEY`
 - Verify API key is valid
-- Check rate limits in Gemini dashboard
+- Check rate limits in OpenAI dashboard
 
 ### Port Already in Use
-- Change `PORT` in `.env` file
+- Change `PORT` in `backend/.env` file
 - Or kill the process using the port
 
 ---
