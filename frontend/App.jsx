@@ -4,6 +4,19 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "./App.css";
 
+const LOADING_TEXTS = [
+  "Guessing mode: activated...",
+  "Hmm, let me think...",
+  "Processing your clue...",
+  "Analyzing possibilities...",
+  "Running through my vocabulary...",
+  "Almost got it...",
+  "Narrowing it down...",
+  "This is a tough one...",
+  "Connecting the dots...",
+  "Searching my brain...",
+];
+
 const App = () => {
   const [messages, setMessages] = useState(() => {
     // Load from localStorage on mount
@@ -44,7 +57,19 @@ const App = () => {
     const saved = localStorage.getItem("acmai-chat-sessions");
     return saved ? JSON.parse(saved) : [];
   });
+  const [loadingText, setLoadingText] = useState(LOADING_TEXTS[0]);
   const scrollRef = useRef(null);
+
+  // Cycle through loading texts randomly while loading
+  useEffect(() => {
+    if (!isLoading) return;
+    
+    const interval = setInterval(() => {
+      setLoadingText(LOADING_TEXTS[Math.floor(Math.random() * LOADING_TEXTS.length)]);
+    }, 1500);
+    
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   // Auto-scroll to bottom of chat
   useEffect(() => {
@@ -111,11 +136,12 @@ const App = () => {
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    const prompt = input; // ✅ store input safely
+    const prompt = input; // store input safely
 
     const userMessage = { role: "user", content: prompt };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setLoadingText(LOADING_TEXTS[Math.floor(Math.random() * LOADING_TEXTS.length)]);
     setIsLoading(true);
 
     try {
@@ -125,7 +151,7 @@ const App = () => {
         body: JSON.stringify({ prompt }),
       });
 
-      const data = await response.json(); // ✅ read once
+      const data = await response.json(); // read once
 
       if (!response.ok) {
         throw new Error(data.error || `Server error ${response.status}`);
@@ -146,7 +172,7 @@ const App = () => {
           role: "assistant",
           content:
             error.message ||
-            "❌ Connection error. Make sure backend is running.",
+            "Connection error. Make sure backend is running.",
         },
       ]);
     } finally {
@@ -311,7 +337,7 @@ const App = () => {
                   <span></span>
                   <span></span>
                 </div>
-                <span className="loading-text">ACM AI is thinking...</span>
+                <span className="loading-text">{loadingText}</span>
               </div>
             )}
             <div ref={scrollRef} />
@@ -357,7 +383,7 @@ const App = () => {
                 className="close-history"
                 onClick={() => setShowHistory(false)}
               >
-                <X size={34} />
+                <X size={100} />
               </button>
             </div>
             <div className="history-list">
@@ -371,7 +397,7 @@ const App = () => {
                     onClick={() => loadChatSession(session)}
                   >
                     <div className="history-item-content">
-                      <div className="history-item-title">{session.title}</div>
+                      <div className="history-item-title">'{session.title}'</div>
                       <div className="history-item-time">
                         {new Date(session.timestamp).toLocaleDateString()}
                       </div>
