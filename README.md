@@ -4,7 +4,29 @@ A Taboo-style word guessing game powered by OpenAI. Built with React and Express
 
 ## What is this?
 
-ACM AI is a full-stack chat application where you play a Taboo-style guessing game against an AI. Give clues (without using taboo words) and the AI will guess your target word. It features a sleek dark theme, markdown rendering, and chat history functionality.
+ACM AI is a full-stack chat application where you play a Taboo-style guessing game against an AI. Give clues (without using taboo words) and the AI will guess your target word. It features a sleek dark theme with glassmorphism effects, markdown rendering, and chat history functionality.
+
+## How to Play
+
+1. **Think of a target word** you want the AI to guess
+2. **Give clues** describing the word without using taboo words (words too similar to the answer)
+3. **The AI responds with a single-word guess** based on your clues
+4. **Keep giving clues** until the AI guesses correctly
+5. The AI will say "Got it!" when it guesses the correct word
+
+**Rules:**
+- Don't use the target word or obvious variants in your clues
+- If the AI detects a taboo word, it will ask you to rephrase
+- The AI only outputs guesses—no follow-up questions
+
+## Features
+
+- **Taboo-style gameplay** – AI guesses your word from clues
+- **Dark glassmorphism UI** – Modern, sleek design with animated gradients
+- **Chat history** – Save and load previous game sessions
+- **Random loading messages** – Fun rotating text while AI thinks
+- **Markdown support** – Rich text formatting in responses
+- **Responsive design** – Works on desktop and mobile
 
 ## Tech Stack
 
@@ -112,4 +134,15 @@ CORS is configured for `http://localhost:5173`. To change it, edit `backend/serv
 - Change `PORT` in `backend/.env` file
 - Or kill the process using the port
 
+### Chat not loading / Connection error
+- Make sure both frontend (`npm run dev`) and backend (`npm run server`) are running
+- Check that backend is running on port 5000
+- Check browser console for CORS errors
+
+### Clear chat history
+- Click the X button in the header to clear the current chat
+- Open the sidebar to view/delete saved chat sessions
+
 ---
+
+Built for ACM AI
